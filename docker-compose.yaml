@@ -1,0 +1,12 @@
+version: "3.7"
+services:
+  php:
+    container_name: product_recommendation
+    image: product_recommendation_php
+    build:
+      context: ./app/
+      dockerfile: ./docker/php/Dockerfile
+    ports:
+      - 9000
+    volumes:
+      - ./app:/app
