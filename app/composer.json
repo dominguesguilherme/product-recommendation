@@ -9,6 +9,7 @@
         "php": "^8.0",
         "ext-ctype": "*",
         "ext-iconv": "*",
+        "ramsey/uuid": "^4.0",
         "doctrine/annotations": "^1.11",
         "symfony/console": "5.4.*",
         "symfony/dotenv": "5.4.*",
@@ -66,12 +67,12 @@
             "@auto-scripts"
         ],
         "test": [
-            "phpstan analyse --memory-limit=-1",
-            "psalm",
             "phpunit"
         ],
         "lint": [
-            "phpcs"
+            "phpcs",
+            "phpstan analyse --memory-limit=-1",
+            "psalm"            
         ],
         "lint-fix": [
             "phpcbf"
