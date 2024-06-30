@@ -12,16 +12,16 @@ use ProductRecommendation\Core\Domain\HistoricalProductRecommender;
 use ProductRecommendation\Core\Domain\Order;
 use ProductRecommendation\Core\Domain\OrderItem;
 use ProductRecommendation\Core\Domain\Product;
-use Ramsey\Uuid\Uuid;
+use ProductRecommendation\Framework\Id;
 
 class HistoricalProductRecommenderTest extends TestCase
 {
-    private function createOrder(string $id, array $products): Order
+    private function createOrder(array $products): Order
     {
-        $order = Order::create($id, new DateTimeImmutable());
+        $order = Order::create(Id::generate(), new DateTimeImmutable());
 
         foreach ($products as $product) {
-            $order->addItems(OrderItem::create(Uuid::uuid4()->toString(), $product, 10, 1));
+            $order->addItems(OrderItem::create(Id::generate(), $product, 10, 1));
         }
 
         return $order;
@@ -29,13 +29,13 @@ class HistoricalProductRecommenderTest extends TestCase
 
     public function testRecommendToShouldReturnTopRecommendedProducts()
     {
-        $chuteira = Product::create('1', 'ABC123', 'Chuteira');
-        $meia = Product::create('2', 'DEF456', 'Meia');
-        $bola = Product::create('3', 'GHI789', 'Bola de futebol');
+        $chuteira = Product::create(Id::generate(), 'ABC123', 'Chuteira');
+        $meia = Product::create(Id::generate(), 'DEF456', 'Meia');
+        $bola = Product::create(Id::generate(), 'GHI789', 'Bola de futebol');
 
-        $order1 = $this->createOrder('1', [$chuteira, $meia]);
-        $order2 = $this->createOrder('2', [$chuteira, $meia]);
-        $order3 = $this->createOrder('3', [$chuteira, $meia, $bola]);
+        $order1 = $this->createOrder([$chuteira, $meia]);
+        $order2 = $this->createOrder([$chuteira, $meia]);
+        $order3 = $this->createOrder([$chuteira, $meia, $bola]);
 
         $expectedRecommendations = [
             $meia,
@@ -50,15 +50,15 @@ class HistoricalProductRecommenderTest extends TestCase
 
     public function testRecommendToShouldReturnTopRecommendedProductsWhenThereAreMoreProductsThanTheLimit()
     {
-        $chuteira = Product::create('1', 'ABC123', 'Chuteira');
-        $meia = Product::create('2', 'DEF456', 'Meia');
-        $bola = Product::create('3', 'GHI789', 'Bola de futebol');
-        $tenis = Product::create('4', 'JKL012', 'Tênis');
+        $chuteira = Product::create(Id::generate(), 'ABC123', 'Chuteira');
+        $meia = Product::create(Id::generate(), 'DEF456', 'Meia');
+        $bola = Product::create(Id::generate(), 'GHI789', 'Bola de futebol');
+        $tenis = Product::create(Id::generate(), 'JKL012', 'Tênis');
 
-        $order1 = $this->createOrder('1', [$chuteira, $meia]);
-        $order2 = $this->createOrder('2', [$chuteira, $meia]);
-        $order3 = $this->createOrder('3', [$chuteira, $meia, $bola]);
-        $order4 = $this->createOrder('4', [$chuteira, $meia, $bola, $tenis]);
+        $order1 = $this->createOrder([$chuteira, $meia]);
+        $order2 = $this->createOrder([$chuteira, $meia]);
+        $order3 = $this->createOrder([$chuteira, $meia, $bola]);
+        $order4 = $this->createOrder([$chuteira, $meia, $bola, $tenis]);
 
         $expectedRecommendations = [
             $meia,
@@ -73,7 +73,7 @@ class HistoricalProductRecommenderTest extends TestCase
 
     public function testRecommendToShouldReturnEmptyArrayWhenThereAreNoOrders()
     {
-        $chuteira = Product::create('1', 'ABC123', 'Chuteira');
+        $chuteira = Product::create(Id::generate(), 'ABC123', 'Chuteira');
 
         $recommender = new HistoricalProductRecommender(5);
         $recommendations = $recommender->recommendTo($chuteira->id(), []);
@@ -83,10 +83,10 @@ class HistoricalProductRecommenderTest extends TestCase
 
     public function testRecommendToShouldReturnEmptyArrayWhenThereAreNoRelatedProducts()
     {
-        $chuteira = Product::create('1', 'ABC123', 'Chuteira');
+        $chuteira = Product::create(Id::generate(), 'ABC123', 'Chuteira');
 
-        $order1 = $this->createOrder('1', [$chuteira]);
-        $order2 = $this->createOrder('1', [$chuteira]);
+        $order1 = $this->createOrder([$chuteira]);
+        $order2 = $this->createOrder([$chuteira]);
 
         $recommender = new HistoricalProductRecommender(5);
         $recommendations = $recommender->recommendTo($chuteira->id(), [$order1, $order2]);

@@ -8,6 +8,7 @@ use DateTimeImmutable;
 use ProductRecommendation\Core\Domain\ProductRecommender;
 use ProductRecommendation\Core\Domain\OrdersByProductFinder;
 use ProductRecommendation\Framework\Clock\Domain\Clock;
+use ProductRecommendation\Framework\Id;
 
 class RecommendProductsHandler
 {
@@ -25,11 +26,11 @@ class RecommendProductsHandler
     {
         $endTo = $this->clock->now();
         $startFrom = $endTo->modify(sprintf('-%d days', $this->periodToConsiderInDays));
-        $orders = $this->ordersByProductFinder->find($recommendProducts->productId, $startFrom, $endTo);
+        $orders = $this->ordersByProductFinder->find(Id::fromString($recommendProducts->productId), $startFrom, $endTo);
         if (count($orders) === 0) {
             return [];
         }
 
-        return $this->productRecommender->recommendTo($recommendProducts->productId, $orders);
+        return $this->productRecommender->recommendTo(Id::fromString($recommendProducts->productId), $orders);
     }
 }

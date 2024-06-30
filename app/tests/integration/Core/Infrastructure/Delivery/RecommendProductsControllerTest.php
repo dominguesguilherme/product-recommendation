@@ -11,7 +11,7 @@ class RecommendProductsControllerTest extends WebTestCase
     public function testRecommend() : void
     {
         $client = static::createClient();
-        $client->request('GET', '/products/1/recommendation');
+        $client->request('GET', '/products/c5daa002-7215-4cf6-a3f2-525bc32c6e66/recommendation');
 
         $response = $client->getResponse();
         $body = json_decode($response->getContent() ?: '');

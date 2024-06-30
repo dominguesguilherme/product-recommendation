@@ -11,13 +11,16 @@ use ProductRecommendation\Core\Application\RecommendProductsHandler;
 use ProductRecommendation\Core\Domain\Order;
 use ProductRecommendation\Core\Domain\ProductRecommender;
 use ProductRecommendation\Core\Domain\OrdersByProductFinder;
+use ProductRecommendation\Core\Domain\Product;
 use ProductRecommendation\Framework\Clock\Infrastructure\FreezedClock;
+use ProductRecommendation\Framework\Id;
 
 class RecommendProductsHandlerTest extends TestCase
 {
     public function testHandleShouldReturnEmptyArrayWhenNoOrdersFound(): void
     {
-        $recommendProducts = new RecommendProducts('product-id');
+        $recommendProductId = Id::generate()->toString();
+        $recommendProducts = new RecommendProducts($recommendProductId);
         $productRecommender = $this->createMock(ProductRecommender::class);
         $ordersByProductFinder = $this->createMock(OrdersByProductFinder::class);
         $frezeedClock = new FreezedClock(new DateTimeImmutable('2021-01-01 00:00:00'));
@@ -27,7 +30,7 @@ class RecommendProductsHandlerTest extends TestCase
 
         $ordersByProductFinder->expects($this->once())
             ->method('find')
-            ->with('product-id', $expectedStartFrom, $expectedEntTo)
+            ->with($recommendProductId, $expectedStartFrom, $expectedEntTo)
             ->willReturn([]);
 
         $this->assertSame([], $recommendProductsHandler->handle($recommendProducts));
@@ -35,30 +38,34 @@ class RecommendProductsHandlerTest extends TestCase
 
     public function testHandleShouldReturnRecommendedProducts(): void
     {
-        $recommendProducts = new RecommendProducts('product-id');
+        $recommendProductId = Id::generate()->toString();
+        $recommendProducts = new RecommendProducts($recommendProductId);
         $productRecommender = $this->createMock(ProductRecommender::class);
         $ordersByProductFinder = $this->createMock(OrdersByProductFinder::class);
         $frezeedClock = new FreezedClock(new DateTimeImmutable('2021-01-01 00:00:00'));
         $expectedEntTo = $frezeedClock->now();
         $expectedStartFrom = $expectedEntTo->modify('-30 days');
         $recommendProductsHandler = new RecommendProductsHandler(30, $productRecommender, $ordersByProductFinder, $frezeedClock);
+        $expectedRecommended = [Product::create(Id::fromString($recommendProductId), '123', 'product')];
 
         $orders = [
-            Order::create('order-id', $expectedStartFrom),
-            Order::create('another-order-id', $expectedStartFrom),
-            Order::create('more-one-order-id', $expectedStartFrom),
+            Order::create(Id::generate(), $expectedStartFrom),
+            Order::create(Id::generate(), $expectedStartFrom),
+            Order::create(Id::generate(), $expectedStartFrom),
         ];
 
         $ordersByProductFinder->expects($this->once())
             ->method('find')
-            ->with('product-id', $expectedStartFrom, $expectedEntTo)
+            ->with($recommendProductId, $expectedStartFrom, $expectedEntTo)
             ->willReturn($orders);
 
         $productRecommender->expects($this->once())
             ->method('recommendTo')
-            ->with('product-id', $orders)
-            ->willReturn(['recommended-product-id']);
+            ->with($recommendProductId, $orders)
+            ->willReturn($expectedRecommended);
 
-        $this->assertSame(['recommended-product-id'], $recommendProductsHandler->handle($recommendProducts));
+        $result = $recommendProductsHandler->handle($recommendProducts);
+
+        $this->assertSame($expectedRecommended, $result);
     }
 }

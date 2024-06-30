@@ -4,14 +4,16 @@ declare(strict_types=1);
 
 namespace ProductRecommendation\Core\Domain;
 
+use ProductRecommendation\Framework\Id;
+
 class OrderItem
 {
-    private string $id;
+    private Id $id;
     private Product $product;
     private float $unitPrice;
     private int $quantity;
 
-    private function __construct(string $id, Product $product, float $unitPrice, int $quantity)
+    private function __construct(Id $id, Product $product, float $unitPrice, int $quantity)
     {
         $this->id = $id;
         $this->product = $product;
@@ -19,12 +21,12 @@ class OrderItem
         $this->quantity = $quantity;
     }
 
-    public static function create(string $id, Product $product, float $unitPrice, int $quantity): self
+    public static function create(Id $id, Product $product, float $unitPrice, int $quantity): self
     {
         return new self($id, $product, $unitPrice, $quantity);
     }
 
-    public function id(): string
+    public function id(): Id
     {
         return $this->id;
     }

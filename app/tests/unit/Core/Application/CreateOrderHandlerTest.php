@@ -10,6 +10,7 @@ use ProductRecommendation\Core\Application\CreateOrder;
 use ProductRecommendation\Core\Application\CreateOrderHandler;
 use ProductRecommendation\Core\Application\OrderItemDTO;
 use ProductRecommendation\Core\Infrastructure\Persistence\InMemoryOrderRepository;
+use ProductRecommendation\Framework\Id;
 
 class CreateOrderHandlerTest extends TestCase
 {
@@ -18,18 +19,18 @@ class CreateOrderHandlerTest extends TestCase
         $repository = new InMemoryOrderRepository();
         $handler = new CreateOrderHandler($repository);
         $command = new CreateOrder(
-            'order-id',
+            'c5daa002-7215-4cf6-a3f2-525bc32c6e66',
             new DateTimeImmutable('2021-01-01'),
             [
-                new OrderItemDTO('item-id', 'product-id', 10.0, 1),
+                new OrderItemDTO(Id::generate()->toString(), Id::generate()->toString(), 10.0, 1),
             ]
         );
 
         $handler->handle($command);
 
-        $savedOrder = $repository->fetchById('order-id');
+        $savedOrder = $repository->fetchById(Id::fromString('c5daa002-7215-4cf6-a3f2-525bc32c6e66'));
 
-        $this->assertSame('order-id', $savedOrder->id());
+        $this->assertSame('c5daa002-7215-4cf6-a3f2-525bc32c6e66', $savedOrder->id()->toString());
     }
 }
 

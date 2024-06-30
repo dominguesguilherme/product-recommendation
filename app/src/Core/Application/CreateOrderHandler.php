@@ -8,6 +8,7 @@ use ProductRecommendation\Core\Domain\Order;
 use ProductRecommendation\Core\Domain\OrderItem;
 use ProductRecommendation\Core\Domain\OrderRepository;
 use ProductRecommendation\Core\Domain\Product;
+use ProductRecommendation\Framework\Id;
 
 class CreateOrderHandler
 {
@@ -17,10 +18,16 @@ class CreateOrderHandler
 
     public function handle(CreateOrder $command): void
     {
-        $order = Order::create($command->id, $command->createdAt);
+        $order = Order::create(Id::fromString($command->id), $command->createdAt);
 
         foreach ($command->items as $item) {
-            $order->addItems(OrderItem::create($item->id, Product::create($item->productId, "", ""), $item->unitPrice, $item->quantity));
+            $order->addItems(
+                OrderItem::create(
+                    Id::fromString($item->id),
+                    Product::create(Id::fromString($item->productId), "", ""),
+                    $item->unitPrice, $item->quantity
+                )
+            );
         }
 
         $this->repository->save($order);

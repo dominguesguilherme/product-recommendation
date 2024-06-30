@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace ProductRecommendation\Core\Domain;
 
 use DateTimeImmutable;
-use Symfony\Component\Validator\Constraints\Date;
+use ProductRecommendation\Framework\Id;
 
 class Order
 {
-    private string $id;
+    private Id $id;
     private DateTimeImmutable $createdAt;
     private float $amount;
     /** @var OrderItem[] */
@@ -18,7 +18,7 @@ class Order
     /**
      * @param OrderItem[] $items
      */
-    private function __construct(string $id, DateTimeImmutable $createdAt, float $amount, array $items)
+    private function __construct(Id $id, DateTimeImmutable $createdAt, float $amount, array $items)
     {
         $this->id = $id;
         $this->createdAt = $createdAt;
@@ -29,7 +29,7 @@ class Order
     /**
      * @param OrderItem[] $items
      */
-    public static function create(string $id, DateTimeImmutable $createdAt, array $items = []): self
+    public static function create(Id $id, DateTimeImmutable $createdAt, array $items = []): self
     {
         $amount = self::calculateAmount($items);
         return new self($id, $createdAt, $amount, $items);
@@ -51,7 +51,7 @@ class Order
         $this->amount += $item->unitPrice() * $item->quantity();
     }
 
-    public function id(): string
+    public function id(): Id
     {
         return $this->id;
     }

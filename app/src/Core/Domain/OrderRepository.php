@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace ProductRecommendation\Core\Domain;
 
+use ProductRecommendation\Framework\Id;
+
 interface OrderRepository
 {
     public function save(Order $order): void;
 
-    public function fetchById(string $id): ?Order;
+    public function fetchById(Id $id): ?Order;
 }

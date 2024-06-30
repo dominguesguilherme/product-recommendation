@@ -4,13 +4,15 @@ declare(strict_types=1);
 
 namespace ProductRecommendation\Core\Domain;
 
+use ProductRecommendation\Framework\Id;
+
 class Product
 {
-    private string $id;
+    private Id $id;
     private string $sku;
     private string $name;
 
-    private function __construct(string $id, string $sku, string $name)
+    private function __construct(Id $id, string $sku, string $name)
     {
         $this->id = $id;
         $this->sku = $sku;
@@ -23,12 +25,12 @@ class Product
      * Isso faz com que o código fique mais limpo e organizado, além de facilitar a criação de objetos de diferentes formas.
      * Ex: eu poderia ter um método createFromName() que cria um objeto a partir do nome do produto e determina os outros atributos.
      **/ 
-    public static function create(string $id, string $sku, string $name): self
+    public static function create(Id $id, string $sku, string $name): self
     {
         return new self($id, $sku, $name);
     }
 
-    public function id(): string
+    public function id(): Id
     {
         return $this->id;
     }

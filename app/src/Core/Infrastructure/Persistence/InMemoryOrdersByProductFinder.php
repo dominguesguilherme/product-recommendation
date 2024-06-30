@@ -7,6 +7,7 @@ namespace ProductRecommendation\Core\Infrastructure\Persistence;
 use DateTimeImmutable;
 use ProductRecommendation\Core\Domain\Order;
 use ProductRecommendation\Core\Domain\OrdersByProductFinder;
+use ProductRecommendation\Framework\Id;
 
 class InMemoryOrdersByProductFinder implements OrdersByProductFinder
 {
@@ -20,7 +21,7 @@ class InMemoryOrdersByProductFinder implements OrdersByProductFinder
     /**
      * @return Order[]
      */
-    public function find(string $productId, DateTimeImmutable $startingFrom, DateTimeImmutable $endTo): array
+    public function find(Id $productId, DateTimeImmutable $startingFrom, DateTimeImmutable $endTo): array
     {
         $ordersFound = [];
         foreach ($this->orders as $order) {

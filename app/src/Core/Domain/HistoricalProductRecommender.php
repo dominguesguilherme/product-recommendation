@@ -6,6 +6,7 @@ namespace ProductRecommendation\Core\Domain;
 
 use ProductRecommendation\Core\Domain\Product;
 use ProductRecommendation\Core\Domain\ProductRecommender;
+use ProductRecommendation\Framework\Id;
 
 class HistoricalProductRecommender implements ProductRecommender
 {
@@ -20,7 +21,7 @@ class HistoricalProductRecommender implements ProductRecommender
      * @param  Order[] $orders
      * @return Product[]
      */
-    public function recommendTo(string $productId, array $orders): array
+    public function recommendTo(Id $productId, array $orders): array
     {
         $productFrequencies = [];
 
@@ -32,7 +33,7 @@ class HistoricalProductRecommender implements ProductRecommender
                     continue;
                 }
 
-                $relatedProductId = $relatedProduct->id();
+                $relatedProductId = $relatedProduct->id()->toString();
 
                 $productFrequencies[$relatedProductId]['product'] = $relatedProduct;
                 $productFrequencies[$relatedProductId]['count'] = ($productFrequencies[$relatedProductId]['count'] ?? 0) + 1;
@@ -44,9 +45,9 @@ class HistoricalProductRecommender implements ProductRecommender
         return array_slice($sortedProducts, 0, $this->topProductsLimit);
     }
 
-    private function isSameProduct(string $productId, Product $relatedProduct): bool
+    private function isSameProduct(Id $productId, Product $relatedProduct): bool
     {
-        return $productId === $relatedProduct->id();
+        return $productId->toString() === $relatedProduct->id()->toString();
     }
 
     /**

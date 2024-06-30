@@ -6,6 +6,7 @@ namespace ProductRecommendation\Core\Infrastructure\Persistence;
 
 use ProductRecommendation\Core\Domain\Order;
 use ProductRecommendation\Core\Domain\OrderRepository;
+use ProductRecommendation\Framework\Id;
 
 class InMemoryOrderRepository implements OrderRepository
 {
@@ -20,22 +21,22 @@ class InMemoryOrderRepository implements OrderRepository
     public function __construct(array $orders = [])
     {
         foreach ($orders as $order) {
-            $this->orders[$order->id()] = $order;
+            $this->orders[$order->id()->toString()] = $order;
         }
     }
 
     public function save(Order $order): void
     {
-        $this->orders[$order->id()] = $order;
+        $this->orders[$order->id()->toString()] = $order;
     }
 
 
-    public function fetchById(string $id): ?Order
+    public function fetchById(Id $id): ?Order
     {
-        if (!isset($this->orders[$id])) {
+        if (!isset($this->orders[$id->toString()])) {
             return null;
         }
 
-        return $this->orders[$id];
+        return $this->orders[$id->toString()];
     }
 }
