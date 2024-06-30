@@ -7,7 +7,7 @@ namespace ProductRecommendation\Tests\Core\Domain;
 use PHPUnit\Framework\TestCase;
 use ProductRecommendation\Core\Domain\OrderItem;
 use ProductRecommendation\Core\Domain\Product;
-use ProductRecommendation\Framework\Id;
+use ProductRecommendation\Framework\Id\Id;
 
 class OrderItemTest extends TestCase
 {

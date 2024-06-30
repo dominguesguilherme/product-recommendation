@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace ProductRecommendation\Tests\Core\Infrastructure\Delivery;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
-use ProductRecommendation\Framework\Id;
+use ProductRecommendation\Framework\Id\Id;
 
 class CreateOrderControllerTest extends WebTestCase
 {

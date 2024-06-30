@@ -10,9 +10,12 @@ WORKDIR /app
 
 EXPOSE 9000
 
-RUN apk add --no-cache $PHPIZE_DEPS
+RUN apk add --no-cache $PHPIZE_DEPS \
+    && apk add --no-cache mysql-client
 
 COPY docker/php/entrypoint.sh /usr/local/bin/entrypoint.sh
+
+RUN install-php-extensions intl mysqli opcache pdo_mysql
 
 ENTRYPOINT ["sh", "/usr/local/bin/entrypoint.sh"]
 CMD php-fpm

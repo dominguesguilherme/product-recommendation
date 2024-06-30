@@ -7,7 +7,7 @@ namespace ProductRecommendation\Core\Infrastructure\Persistence;
 use DateTimeImmutable;
 use ProductRecommendation\Core\Domain\Order;
 use ProductRecommendation\Core\Domain\OrdersByProductFinder;
-use ProductRecommendation\Framework\Id;
+use ProductRecommendation\Framework\Id\Id;
 
 class InMemoryOrdersByProductFinder implements OrdersByProductFinder
 {

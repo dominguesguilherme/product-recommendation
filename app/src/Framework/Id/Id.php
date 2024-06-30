@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace ProductRecommendation\Framework;
+namespace ProductRecommendation\Framework\Id;
 
 use Ramsey\Uuid\Uuid;
 

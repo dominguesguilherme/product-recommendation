@@ -13,7 +13,7 @@ use ProductRecommendation\Core\Domain\ProductRecommender;
 use ProductRecommendation\Core\Domain\OrdersByProductFinder;
 use ProductRecommendation\Core\Domain\Product;
 use ProductRecommendation\Framework\Clock\Infrastructure\FreezedClock;
-use ProductRecommendation\Framework\Id;
+use ProductRecommendation\Framework\Id\Id;
 
 class RecommendProductsHandlerTest extends TestCase
 {

@@ -8,7 +8,7 @@ use DateTimeImmutable;
 use PHPUnit\Framework\TestCase;
 use ProductRecommendation\Core\Domain\Order;
 use ProductRecommendation\Core\Infrastructure\Persistence\InMemoryOrderRepository;
-use ProductRecommendation\Framework\Id;
+use ProductRecommendation\Framework\Id\Id;
 
 class InMemoryOrderRepositoryTest extends TestCase
 {

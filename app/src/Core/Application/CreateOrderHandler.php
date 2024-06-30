@@ -8,7 +8,7 @@ use ProductRecommendation\Core\Domain\Order;
 use ProductRecommendation\Core\Domain\OrderItem;
 use ProductRecommendation\Core\Domain\OrderRepository;
 use ProductRecommendation\Core\Domain\Product;
-use ProductRecommendation\Framework\Id;
+use ProductRecommendation\Framework\Id\Id;
 
 class CreateOrderHandler
 {

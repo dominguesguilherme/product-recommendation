@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace ProductRecommendation\Core\Domain;
 
 use DateTimeImmutable;
-use ProductRecommendation\Framework\Id;
+use ProductRecommendation\Framework\Id\Id;
 
 interface OrdersByProductFinder
 {

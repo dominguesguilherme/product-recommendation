@@ -8,7 +8,7 @@ use DateTimeImmutable;
 use ProductRecommendation\Core\Domain\ProductRecommender;
 use ProductRecommendation\Core\Domain\OrdersByProductFinder;
 use ProductRecommendation\Framework\Clock\Domain\Clock;
-use ProductRecommendation\Framework\Id;
+use ProductRecommendation\Framework\Id\Id;
 
 class RecommendProductsHandler
 {

@@ -10,7 +10,7 @@ use ProductRecommendation\Core\Application\CreateOrder;
 use ProductRecommendation\Core\Application\CreateOrderHandler;
 use ProductRecommendation\Core\Application\OrderItemDTO;
 use ProductRecommendation\Core\Infrastructure\Persistence\InMemoryOrderRepository;
-use ProductRecommendation\Framework\Id;
+use ProductRecommendation\Framework\Id\Id;
 
 class CreateOrderHandlerTest extends TestCase
 {

@@ -4,16 +4,40 @@ declare(strict_types=1);
 
 namespace ProductRecommendation\Core\Domain;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\Mapping as ORM;
 use DateTimeImmutable;
-use ProductRecommendation\Framework\Id;
+use ProductRecommendation\Framework\Id\Id;
 
+/**
+ * @ORM\Entity
+ * @ORM\Table(name="orders")
+ */
 class Order
 {
+    /**
+     * @ORM\Id
+     * @ORM\Column(type="uuid", unique=true)
+     * @ORM\GeneratedValue(strategy="NONE")
+     */
     private Id $id;
+
+    /**
+     * @ORM\Column(type="datetime_immutable")
+     */
     private DateTimeImmutable $createdAt;
+
+    /**
+     * @ORM\Column(type="float")
+     */
     private float $amount;
-    /** @var OrderItem[] */
-    private array $items;
+
+    /**
+     * @var Collection|OrderItem[]
+     * @ORM\OneToMany(targetEntity="OrderItem", mappedBy="order", cascade={"persist", "remove"})
+     */
+    private Collection $items;
 
     /**
      * @param OrderItem[] $items
@@ -23,7 +47,7 @@ class Order
         $this->id = $id;
         $this->createdAt = $createdAt;
         $this->amount = $amount;
-        $this->items = $items;
+        $this->items = new ArrayCollection($items);
     }
 
     /**
@@ -71,6 +95,6 @@ class Order
      */
     public function items(): array
     {
-        return $this->items;
+        return $this->items->toArray();
     }
 }

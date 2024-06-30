@@ -97,6 +97,7 @@
         }
     },
     "require-dev": {
+        "symfony/maker-bundle": "^1.19",
         "doctrine/coding-standard": "^8.2",
         "phpstan/extension-installer": "^1.1",
         "phpstan/phpstan": "^0.12.77",

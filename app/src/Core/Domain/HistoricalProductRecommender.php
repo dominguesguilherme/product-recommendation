@@ -6,7 +6,7 @@ namespace ProductRecommendation\Core\Domain;
 
 use ProductRecommendation\Core\Domain\Product;
 use ProductRecommendation\Core\Domain\ProductRecommender;
-use ProductRecommendation\Framework\Id;
+use ProductRecommendation\Framework\Id\Id;
 
 class HistoricalProductRecommender implements ProductRecommender
 {

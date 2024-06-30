@@ -6,7 +6,7 @@ namespace ProductRecommendation\Core\Infrastructure\Persistence;
 
 use ProductRecommendation\Core\Domain\Order;
 use ProductRecommendation\Core\Domain\OrderRepository;
-use ProductRecommendation\Framework\Id;
+use ProductRecommendation\Framework\Id\Id;
 
 class InMemoryOrderRepository implements OrderRepository
 {
