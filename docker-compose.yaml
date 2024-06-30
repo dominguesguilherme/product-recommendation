@@ -10,6 +10,25 @@ services:
       - 9000
     volumes:
       - ./app:/app
+    environment:
+      - DB_SERVER=mysql
+      - DATABASE_URL=mysql
+      - DB_PORT=3306
+      - DB_NAME=app
+      - DB_USER=root
+      - DB_PASSWORD=root
+    depends_on:
+      - mysql
+
+  mysql:
+    container_name: product_recommendation_database
+    image: mysql:8.0.37
+    ports:
+      - 3307:3306
+    command: --default-authentication-plugin=mysql_native_password
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=app
 
   nginx:
     container_name: product_recommendation_nginx
