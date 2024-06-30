@@ -17,7 +17,6 @@ class CreateOrderHandler
 
     public function handle(CreateOrder $command): void
     {
-
         $order = Order::create($command->id, $command->createdAt);
 
         foreach ($command->items as $item) {

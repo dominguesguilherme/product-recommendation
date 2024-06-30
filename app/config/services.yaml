@@ -15,16 +15,42 @@ services:
 
     # makes classes in src/ available to be used as services
     # this creates a service per class whose id is the fully-qualified class name
-    ProductRecommendation\:
-        resource: '../src/'
-        exclude:
-            - '../src/DependencyInjection/'
-            - '../src/Entity/'
-            - '../src/Kernel.php'
-            - '../src/Tests/'
+    ProductRecommendation\Core\:
+        resource: '../src/Core/*'
+        exclude: '../src/Core/{DependencyInjection,Entity,Migrations,Tests,Kernel.php}'
+
+    ProductRecommendation\Framework\Serializer\:
+        resource: '../src/Framework/Serializer/*'
     
     # controllers are imported separately to make sure services can be injected
     # as action arguments even if you don't extend any base controller class
     ProductRecommendation\Core\Infrastructure\Delivery\:
         resource: '../src/Core/Infrastructure/Delivery'
         tags: ['controller.service_arguments']
+
+    ProductRecommendation\Framework\Serializer\CreateOrderDenormalizer:
+        tags: ['serializer.normalizer']
+
+    Symfony\Component\Serializer\Serializer:
+        arguments:
+            $normalizers:
+                - '@serializer.normalizer.object'
+                - '@ProductRecommendation\Framework\Serializer\CreateOrderDenormalizer'  # Added the custom denormalizer
+            $encoders:
+                - '@serializer.encoder.json'
+                - '@serializer.encoder.xml'
+
+    Symfony\Component\Serializer\Normalizer\ObjectNormalizer:
+        arguments:
+            $classMetadataFactory: '@serializer.mapping.class_metadata_factory'
+            $nameConverter: null
+            $propertyAccessor: '@property_accessor'
+            $propertyTypeExtractor: '@property_info'
+
+    Symfony\Component\Serializer\Mapping\Factory\ClassMetadataFactory:
+        arguments:
+            $loader: '@serializer.mapping.cache_loader'
+
+    Symfony\Component\Serializer\Mapping\Loader\AnnotationLoader:
+        arguments:
+            $reader: '@annotation_reader'
