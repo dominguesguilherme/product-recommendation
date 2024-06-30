@@ -4,8 +4,7 @@
 # Put parameters here that don't need to change on each machine where the app is deployed
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 # parameters:
-#     default_parameter:
-#         - DefaultParameter\Parameter\Exception\Infrastructure\Handler\NotFoundHttpErrorHandle
+#     framework.clock: ProductRecommendation\Core\Framework\Clock\Infrastructure\SystemClock
 
 services:
     # default configuration for services in *this* file
@@ -30,6 +29,25 @@ services:
 
     ProductRecommendation\Framework\Serializer\CreateOrderDenormalizer:
         tags: ['serializer.normalizer']
+
+    ProductRecommendation\Framework\Clock\Infrastructure\SystemClock:
+        class: ProductRecommendation\Framework\Clock\Infrastructure\SystemClock
+
+    # Alias the Clock interface to the SystemClock implementation
+    ProductRecommendation\Framework\Clock\Domain\Clock:
+        alias: ProductRecommendation\Framework\Clock\Infrastructure\SystemClock
+
+    # Register the RecommendProductsHandler service
+    ProductRecommendation\Core\Application\RecommendProductsHandler:
+        arguments:
+            $periodToConsiderInDays: 90 # This could be an env var
+            # $productRecommender: '@ProductRecommendation\Core\Domain\ProductRecommender'
+            # $ordersByProductFinder: '@ProductRecommendation\Core\Domain\OrdersByProductFinder'
+            $clock: '@ProductRecommendation\Framework\Clock\Domain\Clock'
+
+    ProductRecommendation\Core\Domain\HistoricalProductRecommender:
+        arguments:
+            $topProductsLimit: 5 #Poderia ser uma env var
 
     Symfony\Component\Serializer\Serializer:
         arguments:
