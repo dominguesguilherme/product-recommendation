@@ -10,3 +10,20 @@ services:
       - 9000
     volumes:
       - ./app:/app
+
+  nginx:
+    container_name: product_recommendation_nginx
+    image: product_recommendation_nginx
+    build:
+      context: ./app/docker/nginx
+      dockerfile: ./Dockerfile
+    links:
+      - php
+    ports:
+      - 8080:80
+      - 443:443
+    volumes:
+      - "./app/public:/var/www/app/public"
+    environment:
+      - API_HOST=php
+      - API_PORT=9000
