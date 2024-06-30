@@ -20,7 +20,7 @@ class HistoricalProductRecommender implements ProductRecommender
      * @param  Order[] $orders
      * @return Product[]
      */
-    public function recommendTo(Product $product, array $orders): array
+    public function recommendTo(string $productId, array $orders): array
     {
         $productFrequencies = [];
 
@@ -28,7 +28,7 @@ class HistoricalProductRecommender implements ProductRecommender
             foreach ($order->items() as $orderItem) {
                 $relatedProduct = $orderItem->product();
 
-                if ($this->isSameProduct($product, $relatedProduct)) {
+                if ($this->isSameProduct($productId, $relatedProduct)) {
                     continue;
                 }
 
@@ -44,9 +44,9 @@ class HistoricalProductRecommender implements ProductRecommender
         return array_slice($sortedProducts, 0, $this->topProductsLimit);
     }
 
-    private function isSameProduct(Product $product, Product $relatedProduct): bool
+    private function isSameProduct(string $productId, Product $relatedProduct): bool
     {
-        return $product->id() === $relatedProduct->id();
+        return $productId === $relatedProduct->id();
     }
 
     /**

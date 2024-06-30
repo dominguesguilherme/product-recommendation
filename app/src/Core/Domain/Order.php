@@ -26,9 +26,23 @@ class Order
         $this->items = $items;
     }
 
-    public static function create(string $id, DateTimeImmutable $createdAt): self
+    /**
+     * @param OrderItem[] $items
+     */
+    public static function create(string $id, DateTimeImmutable $createdAt, array $items = []): self
     {
-        return new self($id, $createdAt, 0, []);
+        $amount = self::calculateAmount($items);
+        return new self($id, $createdAt, $amount, $items);
+    }
+
+    private static function calculateAmount(array $items): float
+    {
+        $amount = 0;
+        foreach ($items as $item) {
+            $amount += $item->unitPrice() * $item->quantity();
+        }
+
+        return $amount;
     }
 
     public function addItems(OrderItem $item): void

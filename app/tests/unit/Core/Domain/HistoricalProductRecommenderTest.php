@@ -43,7 +43,7 @@ class HistoricalProductRecommenderTest extends TestCase
         ];
 
         $recommender = new HistoricalProductRecommender(5);
-        $recommendations = $recommender->recommendTo($chuteira, [$order1, $order2, $order3]);
+        $recommendations = $recommender->recommendTo($chuteira->id(), [$order1, $order2, $order3]);
 
         $this->assertEquals($expectedRecommendations, $recommendations);
     }
@@ -66,7 +66,7 @@ class HistoricalProductRecommenderTest extends TestCase
         ];
 
         $recommender = new HistoricalProductRecommender(2);
-        $recommendations = $recommender->recommendTo($chuteira, [$order1, $order2, $order3, $order4]);
+        $recommendations = $recommender->recommendTo($chuteira->id(), [$order1, $order2, $order3, $order4]);
 
         $this->assertEquals($expectedRecommendations, $recommendations);
     }
@@ -76,7 +76,7 @@ class HistoricalProductRecommenderTest extends TestCase
         $chuteira = Product::create('1', 'ABC123', 'Chuteira');
 
         $recommender = new HistoricalProductRecommender(5);
-        $recommendations = $recommender->recommendTo($chuteira, []);
+        $recommendations = $recommender->recommendTo($chuteira->id(), []);
 
         $this->assertEmpty($recommendations);
     }
@@ -89,7 +89,7 @@ class HistoricalProductRecommenderTest extends TestCase
         $order2 = $this->createOrder('1', [$chuteira]);
 
         $recommender = new HistoricalProductRecommender(5);
-        $recommendations = $recommender->recommendTo($chuteira, [$order1, $order2]);
+        $recommendations = $recommender->recommendTo($chuteira->id(), [$order1, $order2]);
 
         $this->assertEmpty($recommendations);
     }

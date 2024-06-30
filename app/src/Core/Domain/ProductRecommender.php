@@ -10,5 +10,5 @@ interface ProductRecommender
      * @param  Order[] $orders
      * @return Product[]
      */
-    public function recommendTo(Product $product, array $orders): array;
+    public function recommendTo(string $productId, array $orders): array;
 }
