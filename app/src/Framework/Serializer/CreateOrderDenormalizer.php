@@ -17,7 +17,6 @@ class CreateOrderDenormalizer implements DenormalizerInterface
         $items = [];
         foreach ($data['items'] as $itemData) {
             $items[] = new OrderItemDTO(
-                $itemData['id'],
                 $itemData['productId'],
                 $itemData['unitPrice'],
                 $itemData['quantity']
@@ -25,8 +24,6 @@ class CreateOrderDenormalizer implements DenormalizerInterface
         }
 
         $createOrder = new CreateOrder(
-            $data['id'],
-            new \DateTimeImmutable($data['createdAt']),
             $items
         );
 

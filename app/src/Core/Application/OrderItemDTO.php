@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace ProductRecommendation\Core\Application;
 
 use Symfony\Component\Validator\Constraints as Assert;
+use ProductRecommendation\Framework\Id\Id;
 
 final class OrderItemDTO
 {
-    /** @Assert\NotBlank(allowNull = false) */
     public string $id;
 
     /** @Assert\NotBlank(allowNull = false) */
@@ -28,9 +28,9 @@ final class OrderItemDTO
      */
     public int $quantity;
 
-    public function __construct(string $id, string $productId, float $unitPrice, int $quantity)
+    public function __construct(string $productId, float $unitPrice, int $quantity)
     {
-        $this->id = $id;
+        $this->id = Id::generate()->toString();
         $this->productId = $productId;
         $this->unitPrice = $unitPrice;
         $this->quantity = $quantity;

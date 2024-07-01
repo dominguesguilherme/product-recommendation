@@ -14,6 +14,7 @@ use ProductRecommendation\Core\Domain\OrdersByProductFinder;
 use ProductRecommendation\Core\Domain\Product;
 use ProductRecommendation\Framework\Clock\Infrastructure\FreezedClock;
 use ProductRecommendation\Framework\Id\Id;
+use ProductRecommendation\Core\Domain\ProductRecommendation;
 
 class RecommendProductsHandlerTest extends TestCase
 {
@@ -33,7 +34,9 @@ class RecommendProductsHandlerTest extends TestCase
             ->with($recommendProductId, $expectedStartFrom, $expectedEntTo)
             ->willReturn([]);
 
-        $this->assertSame([], $recommendProductsHandler->handle($recommendProducts));
+        $result = $recommendProductsHandler->handle($recommendProducts);
+
+        $this->assertEmpty($result->products);
     }
 
     public function testHandleShouldReturnRecommendedProducts(): void
@@ -66,6 +69,6 @@ class RecommendProductsHandlerTest extends TestCase
 
         $result = $recommendProductsHandler->handle($recommendProducts);
 
-        $this->assertSame($expectedRecommended, $result);
+        $this->assertSame($expectedRecommended, $result->products);
     }
 }

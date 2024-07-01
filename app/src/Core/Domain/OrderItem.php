@@ -26,7 +26,7 @@ class OrderItem
     private ?Order $order;
 
     /**
-     * @ORM\Column(type="uuid", unique=true)
+     * @ORM\Column(type="uuid")
      */
     private Id $productId;
 

@@ -29,7 +29,18 @@ class RecommendProductsController extends AbstractController
         $command = new RecommendProducts($id);
 
         $recommendation = $this->handler->handle($command);
+        $productsResponse = [
+            'products' => []
+        ];
 
-        return new JsonResponse($recommendation, Response::HTTP_OK);
+        foreach ($recommendation->products as $product) {
+            $productsResponse['products'][] = [
+                'id' => $product->id()->toString(),
+                'sku' => $product->sku(),
+                'name' => $product->name(),
+            ];
+        }
+
+        return new JsonResponse($productsResponse, Response::HTTP_OK);
     }
 }

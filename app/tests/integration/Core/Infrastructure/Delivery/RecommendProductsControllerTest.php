@@ -8,15 +8,15 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class RecommendProductsControllerTest extends WebTestCase
 {
-    public function testRecommend() : void
+    public function testRecommendShouldReturnEmptyWhenThereIsNoRecommendation(): void
     {
         $client = static::createClient();
-        $client->request('GET', '/products/c5daa002-7215-4cf6-a3f2-525bc32c6e66/recommendation');
+        $client->request('GET', '/products/ca8b71fe-0c86-4b61-b48b-2f594730ab07/recommendation');
+        $expectedResponse = ['products' => []];
 
         $response = $client->getResponse();
-        $body = json_decode($response->getContent() ?: '');
-
         $this->assertEquals(200, $response->getStatusCode());
+
         $this->assertTrue(
             $response->headers->contains(
                 'Content-Type',
@@ -25,6 +25,11 @@ class RecommendProductsControllerTest extends WebTestCase
             'the "Content-Type" header is "application/json"'
         );
 
-        $this->assertIsArray($body);
+        $actualBody = json_decode($response->getContent(), true);
+
+        $this->assertEquals(
+            $expectedResponse,
+            $actualBody
+        );
     }
 }

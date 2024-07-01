@@ -19,18 +19,16 @@ class CreateOrderHandlerTest extends TestCase
         $repository = new InMemoryOrderRepository();
         $handler = new CreateOrderHandler($repository);
         $command = new CreateOrder(
-            'c5daa002-7215-4cf6-a3f2-525bc32c6e66',
-            new DateTimeImmutable('2021-01-01'),
             [
-                new OrderItemDTO(Id::generate()->toString(), Id::generate()->toString(), 10.0, 1),
+                new OrderItemDTO(Id::generate()->toString(), 10.0, 1),
             ]
         );
 
         $handler->handle($command);
 
-        $savedOrder = $repository->fetchById(Id::fromString('c5daa002-7215-4cf6-a3f2-525bc32c6e66'));
+        $savedOrder = $repository->fetchById(Id::fromString($command->id));
 
-        $this->assertSame('c5daa002-7215-4cf6-a3f2-525bc32c6e66', $savedOrder->id()->toString());
+        $this->assertSame($command->id, $savedOrder->id()->toString());
     }
 }
 

@@ -53,6 +53,12 @@ services:
     Doctrine\Persistence\ObjectManager: '@doctrine.orm.default_entity_manager'
     Doctrine\Common\Persistence\ObjectManager: '@doctrine.orm.default_entity_manager'
 
+    ProductRecommendation\Core\Domain\ProductsByIdsFinder:
+        class: ProductRecommendation\Core\Infrastructure\Persistence\DoctrineProductsByIdsFinder
+
+    ProductRecommendation\Core\Domain\OrdersByProductFinder:
+        class: ProductRecommendation\Core\Infrastructure\Persistence\DoctrineOrdersByProductFinder
+
     ProductRecommendation\Core\Domain\OrderRepository:
         class: ProductRecommendation\Core\Infrastructure\Persistence\DoctrineOrderRepository
 

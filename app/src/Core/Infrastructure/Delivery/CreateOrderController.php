@@ -29,7 +29,6 @@ class CreateOrderController extends AbstractController
 
         $command = $serializer->deserialize($data, CreateOrder::class, 'json');
         assert($command instanceof CreateOrder);
-        assert($command->items[0] instanceof OrderItemDTO);
 
         $this->handler->handle($command);
 
