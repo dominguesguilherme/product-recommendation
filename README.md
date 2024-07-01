@@ -24,6 +24,8 @@ Com UUID, esses problemas são evitados, pois o UUID é sempre único. Podemos a
 
 * Pra simplificar, não foram feitas as tratativas dos cenários de bordas em relação as respostas da aplicação (404, 400). Eu poderia ter implementado um middleware pra tratar diferentes erros e responder uma resposta, gosto de trabalhar as respostas de erro baseado na [RFC 7807](https://datatracker.ietf.org/doc/html/rfc7807)
 
+* Pra simplificar, a modelagem do banco foi feita utilizando o Doctrine ORM, isso faz com que o dominio esteja acoplado com o framework, o ideal é que o mapeamento tivesse sido feita pra manter a coerência do dominio. Um exemplo, para garantir um mapeamento correto, foi necessário que o `OrderItem` tivesse um atributo `Order` pra gerar a relação `OneTOMany`.
+
 ### Arquitetura
 
 Pensando no cenário de recomendação de produtos, vejo que este é um projeto com grande potencial para evoluir e se tornar muito complexo, especialmente em termos de requisitos de negócio. Por isso, optei por utilizar um modelo arquitetural onde o domínio é o centro, conhecido como Clean Architecture, e consequentemente, Domain-Driven Design (DDD).
@@ -37,6 +39,10 @@ Também foram trabalhados alguns temas importantes que fazem sentido aqui:
 * **Test-Driven Development (TDD):** Adotar TDD garante que o código seja testável e confiável desde o início, ajudando a identificar e corrigir bugs mais cedo no processo de desenvolvimento e melhorando a qualidade geral do software.
 
 Essas abordagens garantem que o projeto seja bem estruturado, sustentável e preparado para futuras evoluções e complexidades.
+
+***Diagrama simples da soulução:***
+
+![image](https://github.com/dominguesguilherme/product-recommendation/assets/52217773/ea214f66-f71c-44b3-80dc-566c12ff4edd)
 
 
 
