@@ -42,7 +42,7 @@ Essas abordagens garantem que o projeto seja bem estruturado, sustentável e pre
 
 ***Diagrama simples da soulução:***
 
-![image](https://github.com/dominguesguilherme/product-recommendation/assets/52217773/ea214f66-f71c-44b3-80dc-566c12ff4edd)
+![image](./diagrama.png)
 
 
 
