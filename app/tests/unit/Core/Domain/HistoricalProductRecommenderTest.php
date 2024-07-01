@@ -21,7 +21,7 @@ class HistoricalProductRecommenderTest extends TestCase
         $order = Order::create(Id::generate(), new DateTimeImmutable());
 
         foreach ($products as $product) {
-            $order->addItems(OrderItem::create(Id::generate(), $product, 10, 1));
+            $order->addItems(OrderItem::create(Id::generate(), $product->id(), 10, 1));
         }
 
         return $order;
@@ -38,8 +38,8 @@ class HistoricalProductRecommenderTest extends TestCase
         $order3 = $this->createOrder([$chuteira, $meia, $bola]);
 
         $expectedRecommendations = [
-            $meia,
-            $bola
+            $meia->id()->toString(),
+            $bola->id()->toString(),
         ];
 
         $recommender = new HistoricalProductRecommender(5);
@@ -61,8 +61,8 @@ class HistoricalProductRecommenderTest extends TestCase
         $order4 = $this->createOrder([$chuteira, $meia, $bola, $tenis]);
 
         $expectedRecommendations = [
-            $meia,
-            $bola,
+            $meia->id()->toString(),
+            $bola->id()->toString(),
         ];
 
         $recommender = new HistoricalProductRecommender(2);

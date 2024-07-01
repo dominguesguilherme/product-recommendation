@@ -16,7 +16,6 @@ class OrderItem
     /**
      * @ORM\Id
      * @ORM\Column(type="uuid", unique=true)
-     * @ORM\GeneratedValue(strategy="NONE")
      */
     private Id $id;
 
@@ -24,13 +23,12 @@ class OrderItem
      * @ORM\ManyToOne(targetEntity="Order", inversedBy="items")
      * @ORM\JoinColumn(name="order_id", referencedColumnName="id", nullable=false)
      */
-    private Order $order;
+    private ?Order $order;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Product")
-     * @ORM\JoinColumn(name="product_id", referencedColumnName="id", nullable=false)
+     * @ORM\Column(type="uuid", unique=true)
      */
-    private Product $product;
+    private Id $productId;
 
     /**
      * @ORM\Column(type="float")
@@ -42,18 +40,18 @@ class OrderItem
      */
     private int $quantity;
 
-    private function __construct(Id $id, Order $order, Product $product, float $unitPrice, int $quantity)
+    private function __construct(Id $id, ?Order $order, Id $productId, float $unitPrice, int $quantity)
     {
         $this->id = $id;
         $this->order = $order;
-        $this->product = $product;
+        $this->productId = $productId;
         $this->unitPrice = $unitPrice;
         $this->quantity = $quantity;
     }
 
-    public static function create(Id $id, Order $order, Product $product, float $unitPrice, int $quantity): self
+    public static function create(Id $id, Id $productId, float $unitPrice, int $quantity): self
     {
-        return new self($id, $order, $product, $unitPrice, $quantity);
+        return new self($id, null, $productId, $unitPrice, $quantity);
     }
 
     public function id(): Id
@@ -61,14 +59,9 @@ class OrderItem
         return $this->id;
     }
 
-    public function order(): Order
+    public function product(): Id
     {
-        return $this->order;
-    }
-
-    public function product(): Product
-    {
-        return $this->product;
+        return $this->productId;
     }
 
     public function unitPrice(): float
@@ -79,5 +72,10 @@ class OrderItem
     public function quantity(): int
     {
         return $this->quantity;
+    }
+
+    public function addToOrder(Order $order): void
+    {
+        $this->order = $order;
     }
 }

@@ -29,9 +29,9 @@ class OrderTest extends TestCase
     {
         $id = Id::generate();
         $product = Product::create(Id::generate(), 'sku', 'name');
-        $orderItem = OrderItem::create(Id::generate(), $product, 10.0, 2);
         $createdAt = new DateTimeImmutable();
         $order = Order::create($id, $createdAt);
+        $orderItem = OrderItem::create(Id::generate(), $product->id(), 10.0, 2);
 
         $order->addItems($orderItem);
 

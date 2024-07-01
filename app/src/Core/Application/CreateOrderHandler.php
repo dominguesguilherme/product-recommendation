@@ -7,7 +7,6 @@ namespace ProductRecommendation\Core\Application;
 use ProductRecommendation\Core\Domain\Order;
 use ProductRecommendation\Core\Domain\OrderItem;
 use ProductRecommendation\Core\Domain\OrderRepository;
-use ProductRecommendation\Core\Domain\Product;
 use ProductRecommendation\Framework\Id\Id;
 
 class CreateOrderHandler
@@ -24,7 +23,7 @@ class CreateOrderHandler
             $order->addItems(
                 OrderItem::create(
                     Id::fromString($item->id),
-                    Product::create(Id::fromString($item->productId), "", ""),
+                    Id::fromString($item->productId),
                     $item->unitPrice, $item->quantity
                 )
             );

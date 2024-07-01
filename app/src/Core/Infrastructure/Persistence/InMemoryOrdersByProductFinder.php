@@ -27,7 +27,7 @@ class InMemoryOrdersByProductFinder implements OrdersByProductFinder
         foreach ($this->orders as $order) {
             if ($order->createdAt() >= $startingFrom && $order->createdAt() <= $endTo) {
                 foreach ($order->items() as $item) {
-                    if ($item->product()->id() === $productId) {
+                    if ($item->product() === $productId) {
                         $ordersFound[] = $order;
                     }
                 }

@@ -33,10 +33,12 @@ class HistoricalProductRecommender implements ProductRecommender
                     continue;
                 }
 
-                $relatedProductId = $relatedProduct->id()->toString();
+                if (!isset($productFrequencies[$relatedProduct->toString()])) {
+                    $productFrequencies[$relatedProduct->toString()] = 0;
+                    continue;
+                }
 
-                $productFrequencies[$relatedProductId]['product'] = $relatedProduct;
-                $productFrequencies[$relatedProductId]['count'] = ($productFrequencies[$relatedProductId]['count'] ?? 0) + 1;
+                $productFrequencies[$relatedProduct->toString()]++;
             }
         }
 
@@ -45,22 +47,19 @@ class HistoricalProductRecommender implements ProductRecommender
         return array_slice($sortedProducts, 0, $this->topProductsLimit);
     }
 
-    private function isSameProduct(Id $productId, Product $relatedProduct): bool
+    private function isSameProduct(Id $productId, Id $relatedProduct): bool
     {
-        return $productId->toString() === $relatedProduct->id()->toString();
+        return $productId->toString() === $relatedProduct->toString();
     }
 
     /**
      * @param  array<string, int> $productFrequencies
-     * @return Product[]
+     * @return array<string, int>
      */
     private function sortByFrequency(array $productFrequencies): array
     {
-        uasort(
-            $productFrequencies, function ($a, $b) {
-                return $b['count'] <=> $a['count'];
-            }
-        );
-        return array_column($productFrequencies, 'product');
+        arsort($productFrequencies);
+
+        return array_keys($productFrequencies);
     }
 }

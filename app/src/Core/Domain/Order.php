@@ -19,7 +19,6 @@ class Order
     /**
      * @ORM\Id
      * @ORM\Column(type="uuid", unique=true)
-     * @ORM\GeneratedValue(strategy="NONE")
      */
     private Id $id;
 
@@ -56,7 +55,13 @@ class Order
     public static function create(Id $id, DateTimeImmutable $createdAt, array $items = []): self
     {
         $amount = self::calculateAmount($items);
-        return new self($id, $createdAt, $amount, $items);
+        $order = new self($id, $createdAt, $amount, $items);
+
+        foreach ($items as $item) {
+            $item->addToOrder($order);
+        }
+
+        return $order;
     }
 
     private static function calculateAmount(array $items): float
@@ -71,6 +76,7 @@ class Order
 
     public function addItems(OrderItem $item): void
     {
+        $item->addToOrder($this);
         $this->items[] = $item;
         $this->amount += $item->unitPrice() * $item->quantity();
     }

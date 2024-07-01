@@ -49,6 +49,13 @@ services:
         arguments:
             $topProductsLimit: 5 #Poderia ser uma env var
 
+    # Entity Manager
+    Doctrine\Persistence\ObjectManager: '@doctrine.orm.default_entity_manager'
+    Doctrine\Common\Persistence\ObjectManager: '@doctrine.orm.default_entity_manager'
+
+    ProductRecommendation\Core\Domain\OrderRepository:
+        class: ProductRecommendation\Core\Infrastructure\Persistence\DoctrineOrderRepository
+
     Symfony\Component\Serializer\Serializer:
         arguments:
             $normalizers:
